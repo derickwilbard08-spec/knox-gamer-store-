@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Knox Gamer Store</title>
+<style>
+body{margin:0;font-family:Arial;background:#0f0f0f;color:white}
+header{padding:20px;text-align:center;background:#111}
+.container{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;padding:20px}
+.card{background:#1c1c1c;padding:10px;border-radius:10px}
+button{width:100%;padding:10px;background:#00ff99;border:none}
+</style>
+</head>
+<body>
+<header>🎮 Knox Gamer Store</header>
+<div class="container" id="games"></div>
+
+<script>
+fetch('/api/games').then(r=>r.json()).then(data=>{
+  let div=document.getElementById('games');
+  data.forEach(g=>{
+    div.innerHTML+=`
+    <div class="card">
+      <h3>${g.name}</h3>
+      <p>${g.platform}</p>
+      <p>TZS ${g.price}</p>
+      <button onclick="buy(${g.id})">Buy</button>
+    </div>`;
+  });
+});
+
+function buy(id){
+  let name=prompt("Jina");
+  let phone=prompt("Simu");
+  let txId=prompt("TigoPesa TxID");
+
+  fetch('/api/buy',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({gameId:id,name,phone,txId})
+  })
+  .then(r=>r.json())
+  .then(d=>alert("CODE YAKO: "+d.code));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head><title>Admin</title></head>
+<body>
+<h2>Admin Login</h2>
+
+<div id="login">
+<input id="u" placeholder="user"><br>
+<input id="p" placeholder="pass" type="password"><br>
+<button onclick="login()">Login</button>
+</div>
+
+<div id="panel" style="display:none">
+<h3>Add Game</h3>
+<input id="name" placeholder="name"><br>
+<input id="price" placeholder="price"><br>
+<input id="platform" placeholder="platform"><br>
+<button onclick="add()">Add</button>
+
+<h3>Add Code</h3>
+<input id="gid" placeholder="gameId"><br>
+<input id="code" placeholder="code"><br>
+<button onclick="addCode()">Add Code</button>
+</div>
+
+<script>
+function login(){
+fetch('/api/login',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({user:u.value,pass:p.value})
+}).then(r=>r.json()).then(d=>{
+if(d.ok){login.style.display='none';panel.style.display='block'}
+else alert('wrong')
+});
+}
+
+function add(){
+fetch('/api/add-game',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+name:name.value,price:price.value,platform:platform.value
+})});
+}
+
+function addCode(){
+fetch('/api/add-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+gameId:gid.value,code:code.value
+})});
+}
+</script>
+
+</body>
+</html>
